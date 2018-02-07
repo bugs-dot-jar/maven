@@ -1,0 +1,9 @@
+---
+BugID: MNG-5212
+Summary: DefaultPluginDescriptorCache does not retain pluginDescriptor dependencies
+Description: PluginDescriptor dependencies is defined in META-INF/maven/plugin.xml,
+  so there is no reason not to retain this field when storing and retrieving PluginDescriptor
+  instances to and from descriptor cache. The attribute can be used in embedding scenarios
+  and for command line builds to quickly determine if plugin has certain dependencies
+  or not, without having to fully resolve plugin dependencies. I'll commit a fix with
+  corresponding unit test shortly.
