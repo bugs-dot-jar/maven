@@ -1,0 +1,10 @@
+---
+BugID: MNG-4918
+Summary: MavenProject#clone() doubles active profiles
+Description: "The error occured in our Project with more than 60 submodules and aggregating
+  JavaDoc. Due to the forking of the LifeCycle many clones of the MavenProject object
+  seem to be performed. Since MavenProject#clone doubles the entries in the list of
+  active profiles we start with one active profile and after a few dozen clones the
+  list of active profiles exceeds 10.000.000 elements. This will than kill the VM
+  by OOME. \n\nmavenProject.getActiveProfiles().size() == 1 \nmavenProject.clone().getActiveProfiles().size()
+  == 2 \nmavenProject.clone().clone().getActiveProfiles().size() == 4\nand so on "
