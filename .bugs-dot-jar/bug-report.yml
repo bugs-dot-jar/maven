@@ -1,0 +1,36 @@
+---
+BugID: MNG-3616
+Summary: Null Pointer Exception when mirrorOf missing from mirror in settings.xml
+Description: "When attempting to generate any archetype from the mvn archetype:generate
+  command I get a null pointer exception thrown if I have mirrors defined in my settings.xml
+  file but fail to have the mirrorOf element set. \n\nThe stack trace for the archetype
+  generation is:\n\nChoose a number: (1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/2\n4/25/26/27/28/29/30/31/32/33/34/35/36/37/38/39/40/41/42/43/44)
+  15: : 6\n[INFO] ------------------------------------------------------------------------\n[ERROR]
+  BUILD FAILURE\n[INFO] ------------------------------------------------------------------------\n[INFO]
+  : java.lang.NullPointerException\nnull\n[INFO] ------------------------------------------------------------------------\n[INFO]
+  Trace\norg.apache.maven.BuildFailureException\nat org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoals(Defa\nultLifecycleExecutor.java:579)\nat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeStandalone\nGoal(DefaultLifecycleExecutor.java:512)\nat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoal(Defau\nltLifecycleExecutor.java:482)\nat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalAndHan\ndleFailures(DefaultLifecycleExecutor.java:330)\nat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeTaskSegmen\nts(DefaultLifecycleExecutor.java:227)\nat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLi\nfecycleExecutor.java:142)\nat
+  org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:336)\nat org.apache.maven.DefaultMaven.execute(DefaultMaven.java:129)\nat
+  org.apache.maven.cli.MavenCli.main(MavenCli.java:287)\nat sun.reflect.NativeMethodAccessorImpl.invoke0(Native
+  Method)\nat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.\njava:39)\nat
+  sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAcces\nsorImpl.java:25)\nat
+  java.lang.reflect.Method.invoke(Method.java:585)\nat org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)\nat
+  org.codehaus.classworlds.Launcher.launch(Launcher.java:255)\nat org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)\n\nat
+  org.codehaus.classworlds.Launcher.main(Launcher.java:375)\nCaused by: org.apache.maven.plugin.MojoFailureException\nat
+  org.apache.maven.archetype.mojos.CreateProjectFromArchetypeMojo.execu\nte(CreateProjectFromArchetypeMojo.java:202)\nat
+  org.apache.maven.plugin.DefaultPluginManager.executeMojo(DefaultPlugi\nnManager.java:451)\nat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoals(Defa\nultLifecycleExecutor.java:558)\n...
+  16 more\n[INFO] ------------------------------------------------------------------------\n[INFO]
+  Total time: 7 seconds\n[INFO] Finished at: Wed May 28 17:49:39 EST 2008\n[INFO]
+  Final Memory: 8M/14M\n[INFO] ------------------------------------------------------------------------\n\nC:\\Documents
+  and Settings\\frank\\My Documents\\Development\\Sandbox>mvn -v\nMaven version: 2.0.9\nJava
+  version: 1.5.0_08\nOS name: \"windows xp\" version: \"5.1\" arch: \"x86\" Family:
+  \"windows\"\n\nThe mirrored settings from the settings.xml file are:\n\n<mirrors>\n<mirror>\n<id>nexus-central</id>\n<url>http://maven.ho.bushlife.com.au:8081/nexus/content/groups/public</url>\n</mirror>\n</mirrors>\n\n\nAs
+  a user you receive a null pointer exception because of something missing in the
+  settings.xml file.\n\nAt the very least you should receive an error message indicating
+  the problem. If you can have a situation where the mirrorOf setting is optional,
+  then it should not be throwing a null pointer exception but handling it better.\n"
