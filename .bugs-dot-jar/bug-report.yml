@@ -1,0 +1,7 @@
+---
+BugID: MNG-4941
+Summary: PluginDescriptorBuilder doesn't populate expression/default-value fields
+  for mojo parameters
+Description: As noted by Guo Du in his patch for MPH-81, the mojo descriptors created
+  by the {{PluginDescriptorBuilder}} come out with parameter descriptors that always
+  return null for the parameter expression and default value.
