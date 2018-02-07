@@ -1,0 +1,23 @@
+---
+BugID: MNG-1856
+Summary: legacy layout tag in a profile does not show up in child pom.
+Description: "the legacy layout tag in a profile does not show up in an inherited
+  pom.\n\nGiven the following pom.xml:\n\n<project>\n  <modelVersion>4.0.0</modelVersion>\n
+  \ <groupId>xxx</groupId>\n  <artifactId>yyy</artifactId>\n  <version>1.0-SNAPSHOT</version>\n
+  \ <packaging>pom</packaging>\n  <profiles>\n    <profile>\n      <id>maven-1</id>\n
+  \     <activation>\n        <property>\n          <name>maven1</name>\n        </property>\n
+  \     </activation>\n      <distributionManagement>\n        <repository>\n          <id>maven-1-repo</id>\n
+  \         <name>Maven1 Repository</name>\n          <url>sftp://...</url>\n          <layout>legacy</layout>\n
+  \       </repository>\n      </distributionManagement>    \n    </profile>\n  </profiles>\n</project>\n\ngives
+  for:\n\nmvn projecthelp:effective-pom -Dmaven1\n\nthe following result:\n\n...\n
+  \ <distributionManagement>\n    <repository>\n      <id>maven-1-repo</id>\n      <name>Maven1
+  Repository</name>\n      <url>sftp://...</url>\n      <layout>legacy</layout>\n
+  \   </repository>\n  </distributionManagement>\n</project>\n\nwhich is CORRECT,
+  however if I inherit from this pom with the following pom.xml:\n\n<project>\n  <parent>\n
+  \   <groupId>xxx</groupId>\n    <artifactId>yyy</artifactId>\n    <version>1.0-SNAPSHOT</version>\n
+  \ </parent>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>uuu</groupId>\n  <artifactId>vvv</artifactId>\n
+  \ <version>2.0-SNAPSHOT</version>\n</project>\n\ngives for:\n\nmvn projecthelp:effective-pom
+  -Dmaven1\n\nthe following result:\n\n...\n  <distributionManagement>\n    <repository>\n
+  \     <id>maven-1-repo</id>\n      <name>Maven1 Repository</name>\n      <url>sftp://...</url>\n
+  \   </repository>\n  </distributionManagement>\n</project>\n\nwhich is INCORRECT,
+  the layout tag is missing.\n\nThis issue may be related to:\n\nhttp://jira.codehaus.org/browse/MNG-731\nhttp://jira.codehaus.org/browse/MNG-1756\n"
