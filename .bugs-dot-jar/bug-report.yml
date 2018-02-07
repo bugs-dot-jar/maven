@@ -1,0 +1,8 @@
+---
+BugID: MNG-2221
+Summary: Multiple Executions of Plugin at Difference Inhertiance levels causes plugin
+  executions to run multiple times
+Description: |-
+  Can occur in a variety of ways, but the attached test case shows a parent pom defining an antrun-execution, and then a child specifying another execution with a different id.  Both executions run twice when running from the child.
+
+  I believe this is the same as Kenney Westerhof's comment: http://jira.codehaus.org/browse/MNG-2054#action_62477
