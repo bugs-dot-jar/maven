@@ -1,0 +1,7 @@
+---
+BugID: MNG-3991
+Summary: POM validator allows <scope>optional</scope> but it is not valid.
+Description: "In my project I did a mistake and I wrote\n{code}\n<dependency>\n\t<groupId>org.slf4j</groupId>\n\t<artifactId>slf4j-log4j12</artifactId>\n\t<version>1.5.0</version>\n\t<scope>optional</scope>\n</dependency>\n{code}\n\nbut
+  in fact I intended to write\n{code}\n<dependency>\n\t<groupId>org.slf4j</groupId>\n\t<artifactId>slf4j-log4j12</artifactId>\n\t<version>1.5.0</version>\n\t<optional>true</optional>\n</dependency>\n{code}\n\nI'm
+  very surprised that Maven doesn't detect such a mistake during the validate phase.
+  Could it be possible to add a check to allow only valid scopes.\n\nThanks"
