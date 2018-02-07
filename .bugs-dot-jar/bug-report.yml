@@ -1,0 +1,31 @@
+---
+BugID: MNG-4565
+Summary: Requiring multiple profile activation conditions to be true does not work
+Description: |
+  According to the documentation at http://www.sonatype.com/books/mvnref-book/reference/profiles-sect-activation.html a profile is activated when all activation conditions are met (which makes sense of course). But when I try to use this it does not work. It seems maven does an OR instead of an AND (which is not rearly as useful and is the opposite of what the documentation says at the previous link).
+
+  For example, if I have one profile that is activated like this:
+
+  {code:xml}         <activation>
+              <activeByDefault>false</activeByDefault>
+              <os>
+                 <name>linux</name>
+              </os>
+           </activation>{code}
+
+  and another profile that is activated like this:
+
+  {code:xml}        <activation>
+              <activeByDefault>false</activeByDefault>
+              <os>
+                 <name>linux</name>
+              </os>
+              <property>
+                  <name>release</name>
+                  <value>true</value>
+              </property>
+           </activation>{code}
+
+  Then I would expect the second profile to only be activated if the OS is linux and the release property is defined.
+
+  When I run 'mvn help:active-profiles' however, maven shows that both profiles are active even though the release property is not defined.
