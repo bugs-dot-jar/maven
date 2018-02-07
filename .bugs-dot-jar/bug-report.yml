@@ -1,0 +1,14 @@
+---
+BugID: MNG-1895
+Summary: Dependencies in two paths are not added to resolution when scope needs to
+  be updated in the nearest  due to any of nearest parents
+Description: |
+  scopes are not correctly calculated for this case
+
+  my pom: a compile, b test
+  a: c compile, d compile
+  b: d compile
+
+  then d ends in test scope because d is closer to my project through the path b-d
+
+  I think scope importance should also be taken into account
