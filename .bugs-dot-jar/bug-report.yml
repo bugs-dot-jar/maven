@@ -1,0 +1,37 @@
+---
+BugID: MNG-4518
+Summary: Profile activation based on JRE version misbehaves if java.version has build
+  number
+Description: |-
+  For this POM snippet
+  {code:xml}
+  <profiles>
+    <profile>
+      <id>test</id>
+      <activation>
+        <jdk>[1.6,)</jdk>
+      </activation>
+    </profile>
+  </profiles>
+  {code}
+  running "mvn help:active-profiles -V" delivers:
+  {noformat}
+  >mvn help:active-profiles -V
+  Apache Maven 2.2.1 (r801777; 2009-08-06 21:16:01+0200)
+  Java version: 1.6.0_07
+  Java home: D:\Programme\Java\jdk-1.6.0_07\jre
+  Default locale: de_DE, platform encoding: Cp1252
+  OS name: "windows xp" version: "5.1" arch: "x86" Family: "windows"
+  [INFO] Scanning for projects...
+  [INFO] Searching repository for plugin with prefix: 'help'.
+  [INFO] ------------------------------------------------------------------------
+  [INFO] Building Maven Integration Test :: MNG-
+  [INFO]    task-segment: [help:active-profiles] (aggregator-style)
+  [INFO] ------------------------------------------------------------------------
+  [INFO] [help:active-profiles {execution: default-cli}]
+  [INFO]
+  Active Profiles for Project 'org.apache.maven.its.mng:test:jar:0.1':
+
+  There are no active profiles.
+  {noformat}
+  This is due to the version 1.6.0_07 which when parsed with Maven version rules is considered older than 1.6.
