@@ -1,0 +1,5 @@
+---
+BugID: MNG-5647
+Summary: "${maven.build.timestamp} uses incorrect ISO datetime separator"
+Description: Separator must be {{T}} and not {{-}} if we predefine ISO 8601 datetime
+  format. Additionally, {{Z}} should be added to denote UTC time zone.
