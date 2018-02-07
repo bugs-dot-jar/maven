@@ -1,0 +1,5 @@
+---
+BugID: MNG-5209
+Summary: MavenProject.getTestClasspathElements can return null elements
+Description: 'A broken {{MavenProject}} can return null values in certain lists, which
+  seems incorrect (at least it is undocumented). Root cause of: http://netbeans.org/bugzilla/show_bug.cgi?id=205867'
