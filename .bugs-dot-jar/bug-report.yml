@@ -1,0 +1,15 @@
+---
+BugID: MNG-3092
+Summary: Resolution of version ranges with non-snapshot bounds can resolve to a snapshot
+  version
+Description: |-
+  Contrary to the 2.0 design docs:
+
+  "Resolution of dependency ranges should not resolve to a snapshot (development version) unless it is included as an explicit boundary."
+  -- from http://docs.codehaus.org/display/MAVEN/Dependency+Mediation+and+Conflict+Resolution#DependencyMediationandConflictResolution-Incorporating%7B%7BSNAPSHOT%7D%7Dversionsintothespecification
+
+  The following is equates to true:
+
+  VersionRange.createFromVersionSpec( "[1.0,1.1]" ).containsVersion( new DefaultArtifactVersion( "1.1-SNAPSHOT" ) )
+
+  The attached patch only allows snapshot versions to be contained in a range if they are equal to one of the boundaries.  Note that this is a strict equality, so [1.0,1.2-SNAPSHOT] will not contain 1.1-SNAPSHOT.
