@@ -1,0 +1,10 @@
+---
+BugID: MNG-1205
+Summary: dependency with scope:system & flag optional = true doesn't appear in the
+  class path
+Description: |-
+  Dependency with scope:system & flag  optional = true doesn't appear in the class path
+  Try to call m2 install  or compiler:compile in the attached project. Compilation will fail ...
+
+  best regards
+  JuBu
