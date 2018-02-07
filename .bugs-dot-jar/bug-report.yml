@@ -1,0 +1,39 @@
+---
+BugID: MNG-4837
+Summary: Interpolation error due to cyclic expression for one of the POM coordinates
+  gets needlessly repeated
+Description: |-
+  This simple POM
+  {code:xml}
+  <project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>test</artifactId>
+    <version>0.1</version>
+    <packaging>jar</packaging>
+
+    <distributionManagement>
+      <repository>
+        <id>maven-core-it</id>
+        <url>file:///${basedir}/repo</url>
+      </repository>
+    </distributionManagement>
+  </project>
+  {code}
+  causes the following model errors:
+  {noformat}
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     Resolving expression: '${groupId}': Detected the following recursive expression cycle: [groupId] -> [Help 2]
+  [ERROR]     'groupId' with value '${groupId}' does not match a valid id pattern. @ line 25, column 12
+  {noformat}
+  Note the excessive repetition of the groupId related cycle although this expression actually appears only once in the POM.
