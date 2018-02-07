@@ -1,0 +1,33 @@
+---
+BugID: MNG-5687
+Summary: Parallel Builds can build in wrong order
+Description: |
+  Fixed JDK8 IT failure for MavenITmng3004ReactorFailureBehaviorMultithreadedTest#testitFailFastSingleThread
+
+  It turns out the execution order of the modules in the build can be incorrect, in some cases severely incorrect.
+  For parallel builds this can have all sorts of interesting side effects such as classpath
+  appearing to be intermittently incorrect, missing jars/resources and similar.
+
+  The -am options and -amd options may simply fail with the incorrect build order
+  because expected dependencies have not been built and actual dependencies may not have been built.
+
+  The underlying problem was that ProjectDependencyGraph#getDownstreamProjects and getUpstreamProjects
+  did not actually obey the reactor build order as defined by ProjectDependencyGraph#getSortedProjects,
+  even though the javadoc claims they should.
+
+  This has only worked by accident on earlier JDK's and might not have worked at all (basically
+  depends on Set iteration order being equal to insertion order). JDK8 has slightly different
+  iteration order, which caused the IT failure.
+
+  This problem may be the root cause of MNG-4996 and any other issue where the modules build
+  in incorrect order.
+
+  The bug affects:
+
+  parallel builds
+  command line -am (--also-make) option
+  command line -amd (also-make-dependents) option
+
+  On all java versions, although visibility might be somewhat different on different jdks.
+
+  Added simple unit test that catches the problem.
