@@ -1,0 +1,14 @@
+---
+BugID: MNG-4915
+Summary: Versions in pom.xml are not checked for invalid characters
+Description: |+
+  It seems that the pom.xml is not checking if the version contains invalid characters. If I have following fragment inside pom:
+
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>>>3.5</version>
+  </dependency>
+
+  then Maven is trying to download JUnit version >>3.5
+
