@@ -1,0 +1,9 @@
+---
+BugID: MNG-4695
+Summary: 'Missing Error during pom validation: "You cannot have two plugin executions
+  with the same (or missing) <id/> elements."'
+Description: "Maven 2.2.1 gives an error \"You cannot have two plugin executions with
+  the same (or missing) <id/> elements.\", if there are two executions for the same
+  plugin without an id element. \nMaven 3.0 beta1 doesn't throw this usefull validation
+  error. It uses the first configuration for both executions.\n\nA relatet issue,
+  where this error has occured with an attached example: http://jira.codehaus.org/browse/MRPM-76\n"
