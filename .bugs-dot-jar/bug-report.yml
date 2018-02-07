@@ -1,0 +1,11 @@
+---
+BugID: MNG-1509
+Summary: Profile activation by os doesn't work
+Description: |+
+  Profile activation by os doesn't work.
+
+  OperatingSystemProfileActivator is missing in components.xml.
+
+  Implementation of OperatingSystemProfileActivator.isActive is wrong.
+
+
