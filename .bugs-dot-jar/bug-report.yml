@@ -1,0 +1,6 @@
+---
+BugID: MNG-4474
+Summary: "[regression] Wagon manager does not respect instantiation strategy of wagons"
+Description: Calling {{WagonManager.getWagon()}} multiple times from the same thread
+  (and with the same thread context class loader) will always return the same wagon
+  instance, even if the wagon uses "per-lookup" instantiation.
