@@ -1,0 +1,14 @@
+---
+BugID: MNG-4761
+Summary: Plugin-level dependency scope causes some plugin classpaths to be incorrect
+Description: |-
+  Plugin-level dependencies should use RUNTIME scope at all times. Using any other scope may alter the weighting given to the subgraph-choice algorithm used in transitive dependency resolution.
+
+
+  Plugin-level dependencies use compile scope by default. When transitive resolution takes place, compile scope takes precedence over runtime scope, causing the transitive dependency sub-graph of the plugin-level dependency to be activated over those of the plugin itself.
+
+  This happens even when the plugin's transitive dep is NEARER to the top level than the one brought in by that plugin-level dependency itself.
+
+  The result is that when a dep that's farther away is chosen over a nearer one, it can then be disabled by Maven choosing to disable its parent dep (the one that brought it in) in another part of the transitive resolution process.
+
+  This is a very subtle case where Maven is doing the wrong thing. The attached test case should make it clearer.
