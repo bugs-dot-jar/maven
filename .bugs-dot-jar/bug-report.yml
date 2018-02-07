@@ -1,0 +1,16 @@
+---
+BugID: MNG-5727
+Summary: unexpected InvalidArtifactRTException from ProjectBuilder#build
+Description: "Calling into ProjectBuilder#build(File, ProjectBuildingRequest) results
+  in InvalidArtifactRTException below if project pom.xml has managed dependency without
+  <version>. Although the pom is invalid, I expected to get ProjectBuildingException
+  that includes location of problematic dependency, similar to what I get during command
+  line build.\n\n{code}\norg.apache.maven.artifact.InvalidArtifactRTException: For
+  artifact {org.apache.maven.its:a:null:jar}: The version cannot be empty.\n\tat org.apache.maven.artifact.DefaultArtifact.validateIdentity(DefaultArtifact.java:148)\n\tat
+  org.apache.maven.artifact.DefaultArtifact.<init>(DefaultArtifact.java:123)\n\tat
+  org.apache.maven.bridge.MavenRepositorySystem.XcreateArtifact(MavenRepositorySystem.java:695)\n\tat
+  org.apache.maven.bridge.MavenRepositorySystem.XcreateDependencyArtifact(MavenRepositorySystem.java:613)\n\tat
+  org.apache.maven.bridge.MavenRepositorySystem.createDependencyArtifact(MavenRepositorySystem.java:121)\n\tat
+  org.apache.maven.project.DefaultProjectBuilder.initProject(DefaultProjectBuilder.java:808)\n\tat
+  org.apache.maven.project.DefaultProjectBuilder.build(DefaultProjectBuilder.java:174)\n\tat
+  org.apache.maven.project.DefaultProjectBuilder.build(DefaultProjectBuilder.java:118)\n...\n{code}\n\n"
