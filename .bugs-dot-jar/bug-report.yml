@@ -1,0 +1,7 @@
+---
+BugID: MNG-1703
+Summary: "<pluginManagement><dependencies> is not propagated to child POMs"
+Description: |-
+  <executions> section in <pluginManagement> isn't propagated to child POMs (as <configuration> is).
+  The workaround is to use <plugins> with <inherited>true</inherited>
+  Is this on purpose ?
