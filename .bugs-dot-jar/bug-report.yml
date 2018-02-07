@@ -1,0 +1,63 @@
+---
+BugID: MNG-4529
+Summary: 'maven fails on IBM JDK 1.5.0 with exception IllegalAccessException: Field
+  is final'
+Description: "On Windows XP, and IBM JDK 1.5.0, maven 2.2.1 fails with the exception
+  IllegalAccessException: Field is final. (See the complete stacktrace is at the end)\n\nHow
+  to duplicate:\n1. (IMPORTANT) Delete maven local repository at <user home>\\.m2\\repository
+  directory completely!\n2. Unzip myapp.zip\n3. Run command \"mvn package -e\"\n\nMore
+  info:\nThe exception will happen when maven trying to set value to some static final
+  fields. Re-run the command will see another new exception (old exception will not
+  happend again). If you try maven in debug mode (to debug it with Eclipse), the exception
+  will NOT appear. The complete information about maven, JDK, etc. are in the attached
+  file: ibm.output.txt. The other output file (sun.output.txt) is the successful result
+  when running using Sun JDK 1.5.0\n\nRoot cause:\nIn StringSearchModelInterpolator.java
+  of maven 2.2.1, there is a code snippet that tries to using Reflection to change
+  values of fields (even if the fields are final)\n\nLine 175: \n  fields[i].setAccessible(
+  true );\nLine 189:\n  fields[i].set( target, interpolated );\n\nIf fields[i] is
+  a final field, on Sun JDK 1.5.0, the operation is successful but on IBM JDK 1.5.0,
+  an exception will be thrown. \n\n\n\n================ Complete stacktrace ==========================\norg.apache.maven.lifecycle.LifecycleExecutionException:
+  Unable to build project for plugin 'org.apache.maven.plugins:maven-compiler-plugin':
+  Failed to interpolate field: public static final java.lang.String org.codehaus.plexus.util.xml.Xpp3Dom.CHILDREN_COMBINATION_MODE_ATTRIBUTE
+  on class: org.codehaus.plexus.util.xml.Xpp3Dom for project unknown:maven-compiler-plugin
+  at Artifact [org.apache.maven.plugins:maven-compiler-plugin:pom:2.0.2]\n\tat org.apache.maven.lifecycle.DefaultLifecycleExecutor.verifyPlugin(DefaultLifecycleExecutor.java:1557)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.getMojoDescriptor(DefaultLifecycleExecutor.java:1851)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.bindLifecycleForPackaging(DefaultLifecycleExecutor.java:1311)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.constructLifecycleMappings(DefaultLifecycleExecutor.java:1275)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoal(DefaultLifecycleExecutor.java:534)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalAndHandleFailures(DefaultLifecycleExecutor.java:387)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeTaskSegments(DefaultLifecycleExecutor.java:348)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLifecycleExecutor.java:180)\n\tat
+  org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:328)\n\tat org.apache.maven.DefaultMaven.execute(DefaultMaven.java:138)\n\tat
+  org.apache.maven.cli.MavenCli.main(MavenCli.java:362)\n\tat org.apache.maven.cli.compat.CompatibleMain.main(CompatibleMain.java:60)\n\tat
+  sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64)\n\tat
+  sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat
+  java.lang.reflect.Method.invoke(Method.java:615)\n\tat org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)\n\tat
+  org.codehaus.classworlds.Launcher.launch(Launcher.java:255)\n\tat org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)\n\tat
+  org.codehaus.classworlds.Launcher.main(Launcher.java:375)\nCaused by: org.apache.maven.plugin.InvalidPluginException:
+  Unable to build project for plugin 'org.apache.maven.plugins:maven-compiler-plugin':
+  Failed to interpolate field: public static final java.lang.String org.codehaus.plexus.util.xml.Xpp3Dom.CHILDREN_COMBINATION_MODE_ATTRIBUTE
+  on class: org.codehaus.plexus.util.xml.Xpp3Dom for project unknown:maven-compiler-plugin
+  at Artifact [org.apache.maven.plugins:maven-compiler-plugin:pom:2.0.2]\n\tat org.apache.maven.plugin.DefaultPluginManager.checkRequiredMavenVersion(DefaultPluginManager.java:293)\n\tat
+  org.apache.maven.plugin.DefaultPluginManager.verifyVersionedPlugin(DefaultPluginManager.java:205)\n\tat
+  org.apache.maven.plugin.DefaultPluginManager.verifyPlugin(DefaultPluginManager.java:184)\n\tat
+  org.apache.maven.plugin.DefaultPluginManager.loadPluginDescriptor(DefaultPluginManager.java:1642)\n\tat
+  org.apache.maven.lifecycle.DefaultLifecycleExecutor.verifyPlugin(DefaultLifecycleExecutor.java:1540)\n\t...
+  19 more\nCaused by: org.apache.maven.project.InvalidProjectModelException: Failed
+  to interpolate field: public static final java.lang.String org.codehaus.plexus.util.xml.Xpp3Dom.CHILDREN_COMBINATION_MODE_ATTRIBUTE
+  on class: org.codehaus.plexus.util.xml.Xpp3Dom for project unknown:maven-compiler-plugin
+  at Artifact [org.apache.maven.plugins:maven-compiler-plugin:pom:2.0.2]\n\tat org.apache.maven.project.DefaultMavenProjectBuilder.buildInternal(DefaultMavenProjectBuilder.java:884)\n\tat
+  org.apache.maven.project.DefaultMavenProjectBuilder.buildFromRepository(DefaultMavenProjectBuilder.java:255)\n\tat
+  org.apache.maven.plugin.DefaultPluginManager.checkRequiredMavenVersion(DefaultPluginManager.java:277)\n\t...
+  23 more\nCaused by: org.apache.maven.project.interpolation.ModelInterpolationException:
+  Failed to interpolate field: public static final java.lang.String org.codehaus.plexus.util.xml.Xpp3Dom.CHILDREN_COMBINATION_MODE_ATTRIBUTE
+  on class: org.codehaus.plexus.util.xml.Xpp3Dom\n\tat org.apache.maven.project.interpolation.StringSearchModelInterpolator$InterpolateObjectAction.traverseObjectWithParents(StringSearchModelInterpolator.java:318)\n\tat
+  org.apache.maven.project.interpolation.StringSearchModelInterpolator$InterpolateObjectAction.run(StringSearchModelInterpolator.java:135)\n\tat
+  org.apache.maven.project.interpolation.StringSearchModelInterpolator$InterpolateObjectAction.run(StringSearchModelInterpolator.java:102)\n\tat
+  java.security.AccessController.doPrivileged(AccessController.java:192)\n\tat org.apache.maven.project.interpolation.StringSearchModelInterpolator.interpolateObject(StringSearchModelInterpolator.java:80)\n\tat
+  org.apache.maven.project.interpolation.StringSearchModelInterpolator.interpolate(StringSearchModelInterpolator.java:62)\n\tat
+  org.apache.maven.project.DefaultMavenProjectBuilder.processProjectLogic(DefaultMavenProjectBuilder.java:990)\n\tat
+  org.apache.maven.project.DefaultMavenProjectBuilder.buildInternal(DefaultMavenProjectBuilder.java:880)\n\t...
+  25 more\nCaused by: java.lang.IllegalAccessException: Field is final\n\tat sun.reflect.UnsafeQualifiedStaticObjectFieldAccessorImpl.set(UnsafeQualifiedStaticObjectFieldAccessorImpl.java:77)\n\tat
+  java.lang.reflect.Field.set(Field.java:684)\n\tat org.apache.maven.project.interpolation.StringSearchModelInterpolator$InterpolateObjectAction.traverseObjectWithParents(StringSearchModelInterpolator.java:189)\n\t...
+  32 more\n"
