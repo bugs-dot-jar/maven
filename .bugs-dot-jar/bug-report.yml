@@ -1,0 +1,10 @@
+---
+BugID: MNG-4383
+Summary: Uninterpolated expressions should cause an error for dependency versions
+Description: "I declared a dependency as such:\n{noformat}<dependency>\n    <groupId>org.slf4j</groupId>\n
+  \   <artifactId>slf4j-api</artifactId>\n    <version>${slf4j.version}</version>\n</dependency>{noformat}
+  \n\nBut did not define the *slf4j.version* property. Obviously ${...} is an expression
+  and if the expression is not resolved, why allow it? Here was the output:\n\n{noformat}
+  Downloading: http://repo1.maven.org/maven2/org/slf4j/slf4j-api/${slf4j.version}/slf4j-api-${slf4j.version}.pom{noformat}
+  \n\nIn terms of usability, an obvious expression should be interpolated. If it cannot,
+  it should be a runtime error."
