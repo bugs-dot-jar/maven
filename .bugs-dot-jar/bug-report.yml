@@ -1,0 +1,14 @@
+---
+BugID: MNG-4512
+Summary: "[regression] Profile activation based on JDK version range fails if current
+  version is close to range boundary"
+Description: "The POM snippet\n{code:xml}\n<profiles>\n  <profile>\n    <id>test</id>\n
+  \   <activation>\n      <jdk>[1.5,1.6)</jdk>\n    </activation>\n  </profile>\n</profiles>\n{code}\nyields\n{noformat}\n[ERROR]
+  \  The project org.apache.maven.its.mng:test:0.1 has 1 error\n[ERROR]     Failed
+  to determine activation for profile test: For input string: \"0_07\"\njava.lang.NumberFormatException:
+  For input string: \"0_07\"\n        at java.lang.NumberFormatException.forInputString(NumberFormatException.java:48)\n
+  \       at java.lang.Integer.parseInt(Integer.java:456)\n        at java.lang.Integer.parseInt(Integer.java:497)\n
+  \       at o.a.m.model.profile.activation.JdkVersionProfileActivator.getRelationOrder(JdkVersionProfileActivator.java:124)\n
+  \       at o.a.m.model.profile.activation.JdkVersionProfileActivator.isInRange(JdkVersionProfileActivator.java:96)\n
+  \       at o.a.m.model.profile.activation.JdkVersionProfileActivator.isActive(JdkVersionProfileActivator.java:70)\n{noformat}\nwhen
+  run with JDK 1.6.0_07 in this case. \n"
