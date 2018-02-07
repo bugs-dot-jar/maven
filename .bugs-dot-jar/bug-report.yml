@@ -1,0 +1,16 @@
+---
+BugID: MNG-4648
+Summary: NullPointerException thrown from DefaultPluginRealmCache#pluginHashCode method
+  if project-level plugin dependency misses version
+Description: |-
+  As a user i would like to see better error reporting from DefaultPluginRealmCache#pluginHashCode method
+
+  Currently it calculates hash value based on a dependency metadata, but if I omit version it fails with NullPointer exception.
+
+  It would be more user friendly to validate metadata prior to calculating hash value and to display more meaningful error to the end user.
+
+  Test scenario:
+   - configure plugin and create dependencies
+   - add dependency but DO NOT specify version
+   - run maven such that plugin is invoked
+  maven will fail without reporting which dependency doesn't have version
