@@ -1,0 +1,48 @@
+---
+BugID: MNG-5459
+Summary: failure to resolve pom artifact from snapshotVersion in maven-metadata.xml
+Description: |-
+  We're using Artifactory on the server side, and ivy / sbt to publish artifacts  upstream.
+
+  After publishing several -SNAPSHOT versions of a project, trying to use it from Maven, resulted in a warning and ultimately a build failure because it cannot determine the dependencies:
+
+  {code}[WARNING] The POM for com.foo:bar:jar:0.4.0-20130404.093655-3 is missing, no dependency information available{code}
+
+  This is the corresponding maven-metadata-snapshots.xml:
+  {code:xml}
+  <metadata>
+    <groupId>com.foo</groupId>
+    <artifactId>bar</artifactId>
+    <version>0.4.0-SNAPSHOT</version>
+    <versioning>
+      <snapshot>
+        <timestamp>20130404.090532</timestamp>
+        <buildNumber>2</buildNumber>
+      </snapshot>
+      <lastUpdated>20130404093657</lastUpdated>
+      <snapshotVersions>
+        <snapshotVersion>
+          <extension>pom</extension>
+          <value>0.4.0-20130404.090532-2</value>
+          <updated>20130404090532</updated>
+        </snapshotVersion>
+        <snapshotVersion>
+          <extension>jar</extension>
+          <value>0.4.0-20130404.093655-3</value>
+          <updated>20130404093655</updated>
+        </snapshotVersion>
+      </snapshotVersions>
+    </versioning>
+  </metadata>
+  {code}
+
+  As you can see, the <value> for the jar artifact and the pom artifact differ:
+
+  0.4.0-20130404.093655-3
+  0.4.0-20130404.090532-2
+
+  Apparently, artifactory optimizes the case when an artifact doesn't change; it does not create a new file, but just links to the existing one.
+
+  Maven, however, takes a shortcut and makes the erroneous assumption that the values for pom and jar artifact always match up.
+
+  The attached patch fixes this.
