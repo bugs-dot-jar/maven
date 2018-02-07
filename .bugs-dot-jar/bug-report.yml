@@ -1,0 +1,16 @@
+---
+BugID: MNG-2408
+Summary: Improve handling of "no plugin version found" error after intermittent errors
+Description: "If you follow the instructions at http://maven.apache.org/guides/getting-started/index.html#How%20do%20I%20make%20my%20first%20Maven%20project?
+  to use the archetype plugin to create a new project skeleton, the suggested command
+  line fails as below.\n\nIt seems there is a typo of some kind in the suggested command
+  line, I am not familiar enough with maven 2 to know for sure.\n\nGraham-Leggetts-Computer:~/src/standard/alchemy/maven
+  minfrin$ mvn archetype:create -DgroupId=za.co.standardbank.alchemy -DartifactId=alchemy-trader
+  \  \n[INFO] Scanning for projects...\n[INFO] Searching repository for plugin with
+  prefix: 'archetype'.\n[INFO] ------------------------------------------------------------------------\n[ERROR]
+  BUILD ERROR\n[INFO] ------------------------------------------------------------------------\n[INFO]
+  The plugin 'org.apache.maven.plugins:maven-archetype-plugin' does not exist or no
+  valid version could be found\n[INFO] ------------------------------------------------------------------------\n[INFO]
+  For more information, run Maven with the -e switch\n[INFO] ------------------------------------------------------------------------\n[INFO]
+  Total time: 1 second\n[INFO] Finished at: Tue Jun 27 09:43:14 SAST 2006\n[INFO]
+  Final Memory: 1M/2M\n[INFO] ------------------------------------------------------------------------\n"
