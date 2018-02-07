@@ -1,0 +1,8 @@
+---
+BugID: MNG-5003
+Summary: MavenPluginManager serves m2e partially initialized mojo descriptors in some
+  cases
+Description: Not sure if this affect command line maven, but m2e sometimes gets MojoDescriptor
+  instances with null classRealm and implementationClass. Looks like the problem has
+  to do with incomplete plugin descriptor setup when after reused cached plugin realm.
+  I'll try to provide a fix and corresponding unit test.
