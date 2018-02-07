@@ -1,0 +1,6 @@
+---
+BugID: MNG-5655
+Summary: WeakMojoExecutionListener callbacks invoked multiple times in some cases
+Description: When the same WeakMojoExecutionListener instance is injected under multiple
+  component Key's, the instance before/after execution callbacks are invoked multiple
+  times.
