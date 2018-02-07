@@ -1,0 +1,16 @@
+---
+BugID: MNG-5716
+Summary: ToolchainManagerPrivate.getToolchainsForType() returns toolchains that are
+  not of expected type
+Description: |-
+  found while working on maven-toolchains-plugin 1.1:
+  {noformat}[INFO] Required toolchain: fake-type [ other-attribute='other-value' attribute='value' ]
+  [DEBUG] Toolchain JDK[/home/opt/jdk1.5] is missing required property: other-attribute
+  [DEBUG] Toolchain JDK[/home/opt/jdk1.6] is missing required property: other-attribute
+  [DEBUG] Toolchain JDK[/home/opt/jdk1.7] is missing required property: other-attribute
+  [DEBUG] Toolchain JDK[/home/opt/jdk1.8] is missing required property: other-attribute
+  [ERROR] No toolchain matched for type fake-type
+  [INFO] Required toolchain: another-fake-type [ any ]
+  [INFO] Toolchain matched for type another-fake-type: JDK[/home/opt/jdk1.5]{noformat}
+
+  these jdk toochains should not have been ever tested again non-jdk type requirement
