@@ -1,0 +1,16 @@
+---
+BugID: MNG-1999
+Summary: Reporting inheritance does not work properly
+Description: |-
+  I have a parent project and some subprojects. The parent project's pom has:
+
+  <reporting>
+     <excludeDefaults>true</excludeDefaults>
+  </reporting>
+
+  However, it does not get inherited to subprojects and so all default reports are generated for all subprojects.
+
+  I'm not sure if this is a bug or a lack of feature but I would be good to have it.
+
+  FYI, I'm speaking about here:
+  http://svn.apache.org/viewcvs.cgi/directory/trunks/apacheds/
