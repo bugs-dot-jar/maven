@@ -1,0 +1,11 @@
+---
+BugID: MNG-1797
+Summary: Dependency excludes apply to every subsequent dependency, not just the one
+  it is declared under.
+Description: "If you specify ANY dependency excludes, all dependencies after that
+  one in the pom will also exclude what you specified.  They appear to be cumulative
+  on every dependency in that they bleed over into sibling dependencies.  \nIt's easy
+  to test if you add an exclusion to a random dependency. This exclusion should exclude
+  a required transitive dependency that is included by a dependency lower in the list.
+  \ You will find that the dependency lower in the list no longer includes the required
+  dependency because it is using the filter you declared in the other dependency.\n"
