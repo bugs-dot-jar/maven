@@ -1,0 +1,9 @@
+---
+BugID: MNG-5075
+Summary: MavenProject.getParent throws undocumented ISE
+Description: |-
+  http://bugzilla-attachments-197994.netbeans.org/bugzilla/attachment.cgi?id=107899 shows a stack trace encountered when calling {{MavenProject.getParent}} on a project with some errors (probably POMs missing in the local repository).
+
+  This method has no Javadoc comment, so it is hard to know exactly what it is permitted/supposed to do, but {{hasParent}} implies that {{null}} is a valid return value, and there is no {{throws IllegalStateException}} clause. The attached patch brings the behavior in line with that signature. (I think I got the {{PlexusTestCase}} infrastructure working with all the required wiring but it may be possible to simplify the test case.)
+
+  Cleaner might be to just declare {{getParent}} (and also {{hasParent}}?) to throw {{ProjectBuildingException}}, though this would be a source-incompatible change. (Only binary-incompatible for clients which are already catching {{IllegalStateException}}!)
