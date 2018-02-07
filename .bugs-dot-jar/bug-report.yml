@@ -1,0 +1,11 @@
+---
+BugID: MNG-2174
+Summary: "<pluginManagement><plugins><plugin><dependencies> do not propogate to child
+  POM plugins (potentially scoped to only affecting child POM plugins that live within
+  a <profile>)"
+Description: |+
+  <pluginManagement><plugins><plugin><dependencies> do not propogate to child POM plugins.
+
+  Kenny believe this works OKAY if the childs are using the parent <pluginManagement> preconfigured plugins in their main <build> section however it does NOT work if the childs are trying to use those preconfigured plugins via their own <profiles>. Configuration propogates through okay but dependencies are missing and have to be respecified in the child POMs.
+
+
