@@ -1,0 +1,37 @@
+---
+BugID: MNG-3131
+Summary: Error message is misleading if a missing plugin parameter is of a type like
+  List
+Description: |-
+  Here is a sample output I got when I was working on the changes-plugin:
+
+  {code}
+  [INFO] One or more required plugin parameters are invalid/missing for 'changes:announcement-mail'
+
+  [0] inside the definition for plugin: 'maven-changes-plugin'specify the following:
+
+  <configuration>
+    ...
+    <smtpHost>VALUE</smtpHost>
+  </configuration>.
+
+  [1] inside the definition for plugin: 'maven-changes-plugin'specify the following:
+
+  <configuration>
+    ...
+    <toAddresses>VALUE</toAddresses>
+  </configuration>.
+  {code}
+
+  Notice the second parameter toAdresses. It is of the type List, so the correct configuration would be something like this
+
+  {code}
+  <configuration>
+    ...
+    <toAddresses>
+      <toAddress>VALUE</toAddress>
+    </toAddresses>
+  </configuration>.
+  {code}
+
+  I haven't found where in the code base the handling of List/Map/Array parameters is. That code could probably be borrowed/reused in maven-core/src/main/java/org/apache/maven/plugin/PluginParameterException.java which is the class responsible for formating the above messages.
