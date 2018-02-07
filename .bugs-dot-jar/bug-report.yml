@@ -1,0 +1,30 @@
+---
+BugID: MNG-5613
+Summary: NPE error when building a reactor with duplicated artifacts
+Description: "Using v3.2.1 when building a malformed project containing a duplicated
+  groupId:artifactId I got this rather unhelpful error:\n\n{code}\n[ERROR] Internal
+  error: java.lang.NullPointerException -> [Help 1]\norg.apache.maven.InternalErrorException:
+  Internal error: java.lang.NullPointerException\n\tat org.apache.maven.DefaultMaven.execute(DefaultMaven.java:167)\n\tat
+  org.apache.maven.cli.MavenCli.execute(MavenCli.java:584)\n\tat org.apache.maven.cli.MavenCli.doMain(MavenCli.java:213)\n\tat
+  org.apache.maven.cli.MavenCli.main(MavenCli.java:157)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native
+  Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)\n\tat
+  sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat
+  java.lang.reflect.Method.invoke(Method.java:601)\n\tat org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:289)\n\tat
+  org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:229)\n\tat
+  org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:415)\n\tat
+  org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:356)\nCaused
+  by: java.lang.NullPointerException\n\tat org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:270)\n\tat
+  org.apache.maven.DefaultMaven.execute(DefaultMaven.java:155)\n\t... 11 more\n{code}\n\nThe
+  more helpful error should have been:\n{code}\norg.apache.maven.project.DuplicateProjectException:
+  Project 'com.foo.bar:foo-bar:2.15.0' is duplicated in the reactor\n\tat org.apache.maven.project.ProjectSorter.<init>(ProjectSorter.java:93)\n\tat
+  org.apache.maven.DefaultProjectDependencyGraph.<init>(DefaultProjectDependencyGraph.java:53)\n\tat
+  org.apache.maven.DefaultMaven.createProjectDependencyGraph(DefaultMaven.java:819)\n\tat
+  org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:268)\n\tat org.apache.maven.DefaultMaven.execute(DefaultMaven.java:155)\n\tat
+  org.apache.maven.cli.MavenCli.execute(MavenCli.java:584)\n\tat org.apache.maven.cli.MavenCli.doMain(MavenCli.java:213)\n\tat
+  org.apache.maven.cli.MavenCli.main(MavenCli.java:157)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native
+  Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)\n\tat
+  sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat
+  java.lang.reflect.Method.invoke(Method.java:601)\n\tat org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:289)\n\tat
+  org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:229)\n\tat
+  org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:415)\n\tat
+  org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:356)\n{code}"
