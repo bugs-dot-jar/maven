@@ -1,0 +1,16 @@
+---
+BugID: MNG-2712
+Summary: update policy 'daily' not honored
+Description: |-
+  under certain circumstances, the '<updatePolicy>daily</updatePolicy>' isn't honored.
+
+  This is the case where the remote metadata file doesn't exist, or contains <version>RELEASE/LATEST (which should never happen)..
+
+  The timestamp used to compare for the update is 0L, because the local file doesn't exist.
+  Then the remote file is retrieved, which also doesn't exist, and no metadatafile is created.
+  The next time an up2date check is done, again against timestamp 0 for a non-existent file.
+
+  This means that if you define a custom snapshot repo in settings.xml or a pom, and you have 500 transitive
+  deps, the repo's that don't have that artifact are consulted 500 times for each mvn invocation.
+
+  A build that normally takes about 20 seconds takes more than 10 minutes because of this bug.
