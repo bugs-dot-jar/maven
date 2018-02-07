@@ -1,0 +1,15 @@
+---
+BugID: MNG-5645
+Summary: version of "..." causes InternalErrorException.
+Description: |-
+  The following dependency causes InternalErrorException.
+
+      <dependency>
+        <groupId>any</groupId>
+        <artifactId>any</artifactId>
+        <version>...</version>
+      </dependency>
+
+  This can be confusing to a new maven user trying to get a dependency to work.
+
+  A patch is attached that fixes the problem.
