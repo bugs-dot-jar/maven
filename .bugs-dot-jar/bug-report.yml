@@ -1,0 +1,13 @@
+---
+BugID: MNG-2931
+Summary: DefaultArtifactCollector changes the version of the originatingArtifact if
+  it's in the dependencyManagement with another version
+Description: "DefaultDependencyTreeBuilder\nhttps://svn.apache.org/repos/asf/maven/shared/trunk/maven-dependency-tree/src/main/java/org/apache/maven/shared/dependency/tree/DefaultDependencyTreeBuilder.java\n\ncalls
+  collect like this\n\n            collector.collect( project.getDependencyArtifacts(),
+  project.getArtifact(), managedVersions, repository,\n                               project.getRemoteArtifactRepositories(),
+  metadataSource, null,\n                               Collections.singletonList(
+  listener ) );\n\nProblem: \nThis pom \nhttp://repo1.maven.org/maven2/org/codehaus/plexus/plexus-component-api/1.0-alpha-22/plexus-component-api-1.0-alpha-22.pom\nextends\nhttp://repo1.maven.org/maven2/org/codehaus/plexus/plexus-containers/1.0-alpha-22/plexus-containers-1.0-alpha-22.pom\nthat
+  in dependencyManagement has org.codehaus.plexus:plexus-component-api:1.0-alpha-19\n\nso
+  during collect project.getArtifact().getVersion() is changed to the managedVersion
+  instead of the original one\n\nEither this is a bug or an exception should be thrown
+  when originatingArtifact is in managedVersions\n\n"
